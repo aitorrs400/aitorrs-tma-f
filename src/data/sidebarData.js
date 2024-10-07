@@ -1,18 +1,10 @@
-import { SvgIconTypeMap } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-
 import HomeIcon from '@mui/icons-material/Home';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import StorageIcon from '@mui/icons-material/Storage';
 import HelpIcon from '@mui/icons-material/Help';
 
-interface SidebarData {
-    label: string
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string }
-    link: string
-}
 
-export const sidebarData: SidebarData[] = [
+export const sidebarData = [
     {
         label: 'Página principal',
         icon: HomeIcon,

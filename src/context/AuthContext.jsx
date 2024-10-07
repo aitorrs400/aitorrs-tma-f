@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
-import { axiosInstance } from '../helpers/axios';
-import { mensajesBack } from '../helpers/mensajesBack';
+import { axiosInstance, mensajesBack } from '../helpers';
+
 
 export const AuthContext = createContext();
 
