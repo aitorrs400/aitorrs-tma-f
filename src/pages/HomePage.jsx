@@ -5,7 +5,6 @@ import { Typography } from '@mui/material';
 export const HomePage = () => {
     
     const { user } = useContext( AuthContext );
-    console.log(user)
 
     return (
         <>
