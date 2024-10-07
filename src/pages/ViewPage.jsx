@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Grid, TextField, Button, Chip } from '@mui/material';
+import { Grid, TextField, Button, Chip, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { binToDec, calculaCRC, getCardType, getRealCRC, getRemainTime, getRemainTrips, getStationData, getTickData, hexToBin } from '../helpers';
 import { CardTypeComponent, ExpirationComponent, StationDataComponent, TickDataComponent, VerifyComponent } from '../components/ViewPage';
@@ -90,9 +90,10 @@ export const ViewPage = () => {
 
             {/* Cabecera principal, donde se insertan los datos */}
             <Grid item xs={12}>
-                <h1>Visualización de datos</h1>
-                <p>{ user.name }, para visualizar los datos de la banda magnética de tu targeta de transporte, introduce la codificación en el siguiente campo. Para mas información sobre como obtener esta codificación, dirígete al apartado "Ayuda"</p>
-                <p>Esta aplicación está diseñada para obtener datos mas precisos del estado de la targeta.</p>
+                <Typography variant="h1" sx={{ fontSize: { xs: "24px", sm: "32px", md: "38px" }, mb: 2 }}>Hola { user.nombre }!</Typography>
+                <Typography sx={{ mb: 2 }}>Para visualizar los datos de la banda magnética de tu targeta de transporte, introduce la codificación en el siguiente campo. Para mas información sobre como obtener esta codificación, dirígete al apartado "Ayuda".</Typography>
+                <Typography sx={{ mb: 2 }}>Esta aplicación está diseñada para obtener datos mas precisos del estado de la targeta.</Typography>
+                
                 <Chip label='AVISO: Modificar los datos de la banda magnética no es ético y corres el riesgo de ser sancionado' color="error" variant="filled" sx={{ mb: 2 }} />
             </Grid>
 

@@ -90,9 +90,7 @@ export const LoginPage = () => {
             <Container component="main" maxWidth="xs">
                 {/* <CssBaseline /> */}
                 <Box sx={{ paddingTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LoginIcon />
-                    </Avatar>
+                    <Avatar src="/static/images/icono.png" sx={{ m: 1, bgcolor: 'secondary.main' }} />
                     <Typography component="h1" variant="h5">
                         Iniciar sesión
                     </Typography>

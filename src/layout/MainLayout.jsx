@@ -134,7 +134,7 @@ export const MainLayout = ({ children }) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                        Estadísticas gasolina
+                        T - Manager
                     </Typography>
                     <Tooltip title="Mi cuenta">
                         <IconButton
