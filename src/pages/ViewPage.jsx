@@ -2,15 +2,14 @@ import { useContext, useState } from 'react';
 import { Grid, TextField, Button, Chip } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { binToDec, calculaCRC, getCardType, getRealCRC, getRemainTime, getRemainTrips, getStationData, getTickData, hexToBin } from '../helpers';
-import { CardData, CardType, Expiration, Tick, Trips } from '../types/types';
 import { CardTypeComponent, ExpirationComponent, StationDataComponent, TickDataComponent, VerifyComponent } from '../components/ViewPage';
-import { useAuthStore } from '../hooks/useAuthStore';
+import { AuthContext } from '../context/AuthContext';
 
 
 export const ViewPage = () => {
     
-    const [cardCode, setCardCode] = useState<string>('');
-    const [cardData, setCardData] = useState<CardData>({
+    const [cardCode, setCardCode] = useState('');
+    const [cardData, setCardData] = useState({
         type: {
             showRemainTrips: false,
             showRemainTime: false,
@@ -55,7 +54,7 @@ export const ViewPage = () => {
         calculatedCRC: ''
     });
 
-    const { user } = useAuthStore();
+    const { user } = useContext( AuthContext );
 
     const handleShow = () => {
 
@@ -68,15 +67,15 @@ export const ViewPage = () => {
             const binaryData = hexToBin(cardCode);
 
             // Obtenemos los datos de la targeta
-            const type: CardType = getCardType(binaryData);
-            const zone: number = binToDec(binaryData.slice(61, 64));
-            const tick: Tick = getTickData(binaryData);
-            const station: string = binToDec(binaryData.slice(76,87)).toString();
+            const type = getCardType(binaryData);
+            const zone = binToDec(binaryData.slice(61, 64));
+            const tick = getTickData(binaryData);
+            const station = binToDec(binaryData.slice(76,87)).toString();
             const stationData = getStationData(parseInt(station, 10));
-            const trips: Trips = getRemainTrips(binaryData, type.totalTrips);
-            const expiration: Expiration =  getRemainTime(binaryData, type.totalDays);
-            const realCRC: string = getRealCRC(binaryData);
-            const calculatedCRC: string = calculaCRC(binaryData);
+            const trips = getRemainTrips(binaryData, type.totalTrips);
+            const expiration =  getRemainTime(binaryData, type.totalDays);
+            const realCRC = getRealCRC(binaryData);
+            const calculatedCRC = calculaCRC(binaryData);
 
             // Finalmente, seteamos los datos en el estado
             setCardData({ type, zone, tick, station, stationData, trips, expiration, realCRC, calculatedCRC });

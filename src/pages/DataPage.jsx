@@ -1,15 +1,14 @@
 import { useContext } from 'react';
 import { stationsDB } from '../assets/data/stationsDB';
 import { ObtenirDadesAMBResult } from '../assets/data/output';
-import { useAuthStore } from '../hooks/useAuthStore';
 
 export const DataPage = () => {
     
-    const { usuario } = useAuthStore();
+    const { user } = useContext( AuthContext );
 
-    const obtenerServicios = (): string[] => {
+    const obtenerServicios = () => {
     
-        let registros: string[] = [];
+        let registros = [];
     
         // Obtenemos el tipo de estación de todas las estaciones
         stationsDB.map( station => {
@@ -25,9 +24,9 @@ export const DataPage = () => {
 
     }
 
-    const obtenerLineas = ( servicio: string ): string[] => {
+    const obtenerLineas = ( servicio ) => {
     
-        let registros: string[] = [];
+        let registros = [];
 
         const serviciosFiltrados = stationsDB.filter( station => station.type === servicio );
 

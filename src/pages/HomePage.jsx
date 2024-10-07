@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import { peticionBase } from '../api';
-import { useAuthStore } from '../hooks/useAuthStore';
+import { AuthContext } from '../context/AuthContext';
 
 export const HomePage = () => {
     
-    const { user } = useAuthStore();
+    const { user } = useContext( AuthContext );
 
     return (
         <>
