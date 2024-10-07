@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import App from './App';
@@ -20,6 +22,9 @@ const analytics = getAnalytics(app);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />  
+    <BrowserRouter>
+      <CssBaseline />
+      <App />  
+    </BrowserRouter>
   </React.StrictMode>
 )
