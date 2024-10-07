@@ -1,11 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-
-export interface PaletteColor {
-    light?: string;
-    main: string;
-    dark?: string;
-    contrastText?: string;
-  }
+import { esES } from '@mui/x-data-grid/locales';
 
   
 export const theme = createTheme({
@@ -25,4 +19,4 @@ export const theme = createTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
-});
+}, esES);

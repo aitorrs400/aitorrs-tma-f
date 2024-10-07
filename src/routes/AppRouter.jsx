@@ -1,6 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { PublicRoute, PrivateRoute, MainRoutes } from '.';
 import { LoginPage } from '../pages';
-import { MainRoutes, PrivateRoute, PublicRoute } from './';
 
 export const AppRouter = () => {
 

@@ -1,15 +1,12 @@
 import { useContext } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../hooks/useAuthStore';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-interface Props {
-    children: JSX.Element
-}
 
-export const PrivateRoute = ({ children }: Props) => {
+export const PrivateRoute = ({ children }) => {
 
     // Comprobamos si el usuario está autenticado
-    const { logged } = useAuthStore();
+    const { logged } = useContext( AuthContext );
 
     // Si lo está, devolvemos las rutas privadas; en caso contrario, redirigimos a la pagina login
     return (logged)
