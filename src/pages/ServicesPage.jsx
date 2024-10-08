@@ -6,6 +6,8 @@ import { axiosInstance, mensajesBack } from "../helpers";
 
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import InfoIcon from '@mui/icons-material/Info';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -42,15 +44,15 @@ export const ServicesPage = () => {
 
                 const navigate = useNavigate();
                 
-                // const handleDetails = (e) => {
-                //     e.stopPropagation(); // don't select this row after clicking
-                //     navigate('/vehiculos/detalles/'+params.id, { replace: true });
-                // };
+                const handleDetails = (e) => {
+                    e.stopPropagation(); // don't select this row after clicking
+                    navigate('/services/view/'+params.id, { replace: true });
+                };
 
-                // const handleEdit = (e) => {
-                //     e.stopPropagation(); // don't select this row after clicking
-                //     navigate('/vehiculos/editar/'+params.id, { replace: true });
-                // };
+                const handleEdit = (e) => {
+                    e.stopPropagation(); // don't select this row after clicking
+                    navigate('/services/edit/'+params.id, { replace: true });
+                };
 
                 const handleDelete = (e) => {
                     e.stopPropagation();
@@ -59,16 +61,16 @@ export const ServicesPage = () => {
         
                 return (
                     <>
-                        {/* <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
+                        <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
                             <IconButton color="primary" onClick={ handleDetails }>
                                 <InfoIcon />
                             </IconButton>
-                        </Tooltip> */}
-                        {/* <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
+                        </Tooltip>
+                        <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
                             <IconButton color="warning" onClick={ handleEdit }>
                                 <ModeEditIcon />
                             </IconButton>
-                        </Tooltip> */}
+                        </Tooltip>
                         <Tooltip arrow title="Eliminar" placement="right" TransitionComponent={Zoom}>
                             <IconButton color="error" onClick={ handleDelete }>
                                 <DeleteIcon />
