@@ -279,23 +279,24 @@ export const LinesViewEditPage = ({ edit }) => {
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <div style={{
-                                marginTop: '8px',
+                        <div style={{
+                            marginTop: '8px',
+                            marginBottom: '8px',
+                            padding: 0,
+                            width: '70px',
+                            height: '70px',
+                            backgroundColor: line.colorFondo
+                        }}>
+                            <p style={{
+                                margin: 0,
                                 padding: 0,
-                                width: '100px',
-                                height: '100px',
-                                backgroundColor: line.colorFondo
-                            }}>
-                                <p style={{
-                                    margin: 0,
-                                    padding: 0,
-                                    textAlign: 'center',
-                                    fontWeight: 'bold',
-                                    fontSize: 28,
-                                    lineHeight: '100px',
-                                    color: line.colorTexto
-                                }}>{ line.label }</p>
-                            </div>
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                fontSize: 18,
+                                lineHeight: '70px',
+                                color: line.colorTexto
+                            }}>{ line.label }</p>
+                        </div>
                         </Grid>
                     </Grid>
                 </Paper>
