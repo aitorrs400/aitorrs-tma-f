@@ -13,6 +13,7 @@ export const LinesAddPage = () => {
 
     // Declaración de estados
     const [line, setLine] = useState({ nombre: '', label: '', colorFondo: '', colorTexto: '', servicio: '' });
+    const [service, setService] = useState(null);
     const [servicesList, setServicesList] = useState([]);
     const [formErrors, setFormErrors] = useState({ nombre: false, label: false, colorFondo: false, colorTexto: false, servicio: false });
     const [snackState, setSnackState] = useState({ open: false, Transition: Slide, text: 'Snackbar sin asignar', severity: 'info' });
@@ -43,6 +44,18 @@ export const LinesAddPage = () => {
                 open: true
             });
 
+        }
+
+    }
+
+    const changeService = (id) => {
+
+        const serviceFiltrado = servicesList.filter(s => s.id === id);
+
+        if( serviceFiltrado ) {
+            if( serviceFiltrado.length > 0 ) {
+                setService(serviceFiltrado[0]);
+            }
         }
 
     }
@@ -164,7 +177,10 @@ export const LinesAddPage = () => {
                                 <Select
                                     id="servicio"
                                     value={ line.servicio }
-                                    onChange={ (e) => { setLine(prev => ({ ...prev, servicio: e.target.value }))} }
+                                    onChange={ (e) => {
+                                        setLine(prev => ({ ...prev, servicio: e.target.value }));
+                                        changeService(e.target.value);
+                                    } }
                                 >
                                     <MenuItem value=""><em>Seleccionar</em></MenuItem>
                                     {
@@ -233,8 +249,8 @@ export const LinesAddPage = () => {
                 </Paper>
             </Grid>
 
-             {/* Icono de la línea */}
-             <Grid item xs={12} md={4} lg={4}>
+            {/* Icono de la línea */}
+            <Grid item xs={12} md={4} lg={4}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
                         Vista previa del icono
@@ -243,9 +259,10 @@ export const LinesAddPage = () => {
                         <Grid item xs={12}>
                         <div style={{
                             marginTop: '8px',
+                            marginBottom: '8px',
                             padding: 0,
-                            width: '100px',
-                            height: '100px',
+                            width: '70px',
+                            height: '70px',
                             backgroundColor: line.colorFondo
                         }}>
                             <p style={{
@@ -253,11 +270,27 @@ export const LinesAddPage = () => {
                                 padding: 0,
                                 textAlign: 'center',
                                 fontWeight: 'bold',
-                                fontSize: 28,
-                                lineHeight: '100px',
+                                fontSize: 18,
+                                lineHeight: '70px',
                                 color: line.colorTexto
                             }}>{ line.label }</p>
                         </div>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Grid>
+
+            {/* Imagen del servicio */}
+            <Grid item xs={12} md={4} lg={4}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                        Imagen del servicio
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            {
+                                service ? (<img style={{ marginTop: '8px' }} src={ service.imagen } />) : (<Typography>Sin imagen de servicio</Typography>)
+                            }
                         </Grid>
                     </Grid>
                 </Paper>
