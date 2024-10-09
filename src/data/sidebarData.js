@@ -1,5 +1,6 @@
 import HomeIcon from '@mui/icons-material/Home';
 import CommuteIcon from '@mui/icons-material/Commute';
+import TimelineIcon from '@mui/icons-material/Timeline';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import StorageIcon from '@mui/icons-material/Storage';
 import HelpIcon from '@mui/icons-material/Help';
@@ -12,19 +13,19 @@ export const sidebarData = [
         link: '/home'
     },
     {
-        label: 'Lista de servicios',
-        icon: CommuteIcon,
-        link: '/services'
-    },
-    {
         label: 'Visualización',
         icon: VisibilityIcon,
         link: '/view'
     },
     {
-        label: 'Datos',
-        icon: StorageIcon,
-        link: '/data'
+        label: 'Lista de servicios',
+        icon: CommuteIcon,
+        link: '/services'
+    },
+    {
+        label: 'Lista de líneas',
+        icon: TimelineIcon,
+        link: '/lines'
     },
     {
         label: 'Ayuda',
