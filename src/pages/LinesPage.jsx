@@ -5,6 +5,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { axiosInstance, mensajesBack } from "../helpers";
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 export const LinesPage = () => {
@@ -150,9 +151,9 @@ export const LinesPage = () => {
 
     }
 
-    // const handleAdd = () => {
-    //     navigate('/services/add', { replace: true });
-    // }
+    const handleAdd = () => {
+        navigate('/lines/add', { replace: true });
+    }
 
     const handleModalEliminar = (e) => {
         setModalEliminar({ abierto: false, id: '', nombre: '' });
@@ -229,7 +230,7 @@ export const LinesPage = () => {
                                         />
                                     </div>
                                     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: '8px' }}>
-                                        {/* <Button variant="contained" color="success" endIcon={ <AddIcon /> } onClick={ handleAdd }>Añadir nuevo</Button> */}
+                                        <Button variant="contained" color="success" endIcon={ <AddIcon /> } onClick={ handleAdd }>Añadir nueva</Button>
                                         <Button variant="contained" color="primary" endIcon={ <RefreshIcon /> } onClick={ peticionesApi }>Actualizar</Button>
                                     </Box>
                                 </>

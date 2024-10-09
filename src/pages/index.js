@@ -1,5 +1,6 @@
 export * from './DataPage';
 export * from './HomePage';
+export * from './LinesAddPage';
 export * from './LinesPage';
 export * from './LoginPage';
 export * from './ServicesAddPage';
