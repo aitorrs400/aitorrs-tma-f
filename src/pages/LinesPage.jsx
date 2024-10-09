@@ -1,17 +1,21 @@
-import { Alert, Box, CircularProgress, Grid, Paper, Slide, Snackbar, Typography } from "@mui/material"
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Alert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Paper, Slide, Snackbar, Tooltip, Typography, Zoom } from "@mui/material"
+import { DataGrid } from "@mui/x-data-grid";
 import { axiosInstance, mensajesBack } from "../helpers";
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 export const LinesPage = () => {
 
     // Preparamos las variables necesarias
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // Preparamos los estados necesarios
     const [loading, setLoading] = useState(true);
     const [lineasList, setLineasList] = useState([]);
-    // const [modalEliminar, setModalEliminar] = useState({ abierto: false, id: '', nombre: '' });
+    const [modalEliminar, setModalEliminar] = useState({ abierto: false, id: '', nombre: '' });
     const [snackState, setSnackState] = useState({ open: false, Transition: Slide, text: 'Snackbar sin asignar', severity: 'info', autoHide: 5000 });
 
     // Listado de columnas que tendrá la tabla
@@ -31,15 +35,17 @@ export const LinesPage = () => {
                     padding: 0,
                     width: '50px',
                     height: '50px',
-                    backgroundColor: params.row.color
+                    backgroundColor: params.row.colorFondo
                 }}>
                     <p style={{
                         textAlign: 'center',
                         fontWeight: 'bold',
-                        fontSize: 16
+                        fontSize: 16,
+                        color: params.row.colorTexto
                     }}>{ params.row.label }</p>
                 </div>
                 )
+
             },
         },
         {
@@ -53,57 +59,62 @@ export const LinesPage = () => {
             width: 110
         },
         {
-            field: 'color',
-            headerName: 'Color',
-            width: 200
+            field: 'colorFondo',
+            headerName: 'Color de fondo',
+            width: 130
         },
-        // {
-        //     field: 'actions',
-        //     headerName: 'Acciones',
-        //     type: 'actions',
-        //     headerAlign: 'center',
-        //     width: 120,
-        //     renderCell: (params) => {
+        {
+            field: 'colorTexto',
+            headerName: 'Color de texto',
+            width: 130
+        },
+        {
+            field: 'actions',
+            headerName: 'Acciones',
+            type: 'actions',
+            headerAlign: 'center',
+            width: 120,
+            renderCell: (params) => {
 
-        //         const navigate = useNavigate();
+                const navigate = useNavigate();
                 
-        //         const handleDetails = (e) => {
-        //             e.stopPropagation(); // don't select this row after clicking
-        //             navigate('/services/view/'+params.id, { replace: true });
-        //         };
+                // const handleDetails = (e) => {
+                //     e.stopPropagation(); // don't select this row after clicking
+                //     navigate('/services/view/'+params.id, { replace: true });
+                // };
 
-        //         const handleEdit = (e) => {
-        //             e.stopPropagation(); // don't select this row after clicking
-        //             navigate('/services/edit/'+params.id, { replace: true });
-        //         };
+                // const handleEdit = (e) => {
+                //     e.stopPropagation(); // don't select this row after clicking
+                //     navigate('/services/edit/'+params.id, { replace: true });
+                // };
 
-        //         const handleDelete = (e) => {
-        //             e.stopPropagation();
-        //             setModalEliminar({ abierto: true, id: params.id, nombre: params.row.nombre });
-        //         }
+                const handleDelete = (e) => {
+                    e.stopPropagation();
+                    setModalEliminar({ abierto: true, id: params.id, nombre: params.row.nombre });
+                }
         
-        //         return (
-        //             <>
-        //                 <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
-        //                     <IconButton color="primary" onClick={ handleDetails }>
-        //                         <InfoIcon />
-        //                     </IconButton>
-        //                 </Tooltip>
-        //                 <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
-        //                     <IconButton color="warning" onClick={ handleEdit }>
-        //                         <ModeEditIcon />
-        //                     </IconButton>
-        //                 </Tooltip>
-        //                 <Tooltip arrow title="Eliminar" placement="right" TransitionComponent={Zoom}>
-        //                     <IconButton color="error" onClick={ handleDelete }>
-        //                         <DeleteIcon />
-        //                     </IconButton>
-        //                 </Tooltip>
-        //             </>
-        //         );
+                return (
+                    <>
+                        {/* <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
+                            <IconButton color="primary" onClick={ handleDetails }>
+                                <InfoIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
+                            <IconButton color="warning" onClick={ handleEdit }>
+                                <ModeEditIcon />
+                            </IconButton>
+                        </Tooltip> */}
+                        <Tooltip arrow title="Eliminar" placement="right" TransitionComponent={Zoom}>
+                            <IconButton color="error" onClick={ handleDelete }>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                );
 
-        //     }       
-        // },
+            }       
+        },
     ];
 
     // Preparamos los efectos necesarios
@@ -143,51 +154,51 @@ export const LinesPage = () => {
     //     navigate('/services/add', { replace: true });
     // }
 
-    // const handleModalEliminar = (e) => {
-    //     setModalEliminar({ abierto: false, id: '', nombre: '' });
-    // }
+    const handleModalEliminar = (e) => {
+        setModalEliminar({ abierto: false, id: '', nombre: '' });
+    }
 
     const handleSnackClose = () => {
         setSnackState({ ...snackState, open: false, autoHide: 5000 });
     }
 
-    // const handleEliminar = async (id) => {
+    const handleEliminar = async (id) => {
         
-    //     // Cerramos el modal
-    //     handleModalEliminar();
+        // Cerramos el modal
+        handleModalEliminar();
 
-    //     try {
+        try {
 
-    //         // Hacemos la petición al back
-    //         const result = await axiosInstance.delete('/api/servicio/'+id);
+            // Hacemos la petición al back
+            const result = await axiosInstance.delete('/api/linea/'+id);
 
-    //         // Mostramos mensaje informativo
-    //         setSnackState({
-    //             ...snackState,
-    //             text: 'Servicio eliminado correctamente',
-    //             severity: 'success',
-    //             open: true
-    //         }); 
+            // Mostramos mensaje informativo
+            setSnackState({
+                ...snackState,
+                text: 'Línea eliminada correctamente',
+                severity: 'success',
+                open: true
+            }); 
             
-    //         // Volvemos a hacer petición a la API
-    //         peticionesApi();
+            // Volvemos a hacer petición a la API
+            peticionesApi();
 
-    //     } catch( error ) {
+        } catch( error ) {
 
-    //         // Generamos el mensaje de error
-    //         let mensaje = mensajesBack(error);
+            // Generamos el mensaje de error
+            let mensaje = mensajesBack(error);
 
-    //         // Si hay algún error, mostramos un mensaje
-    //         setSnackState({
-    //             ...snackState,
-    //             text: 'Error al eliminar el servicio. Motivo: '+mensaje,
-    //             severity: 'error',
-    //             open: true
-    //         });
+            // Si hay algún error, mostramos un mensaje
+            setSnackState({
+                ...snackState,
+                text: 'Error al eliminar la línea. Motivo: '+mensaje,
+                severity: 'error',
+                open: true
+            });
 
-    //     }
+        }
 
-    // }
+    }
 
     return (
         <>
@@ -217,10 +228,10 @@ export const LinesPage = () => {
                                             pageSizeOptions={[5, 10]}
                                         />
                                     </div>
-                                    {/* <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: '8px' }}>
-                                        <Button variant="contained" color="success" endIcon={ <AddIcon /> } onClick={ handleAdd }>Añadir nuevo</Button>
+                                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: '8px' }}>
+                                        {/* <Button variant="contained" color="success" endIcon={ <AddIcon /> } onClick={ handleAdd }>Añadir nuevo</Button> */}
                                         <Button variant="contained" color="primary" endIcon={ <RefreshIcon /> } onClick={ peticionesApi }>Actualizar</Button>
-                                    </Box> */}
+                                    </Box>
                                 </>
                             )
                         }
@@ -244,23 +255,23 @@ export const LinesPage = () => {
                 </Snackbar>
 
             </Grid>
-            {/* <Dialog
+            <Dialog
                 open={ modalEliminar.abierto }
                 keepMounted
                 onClose={ handleModalEliminar }
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>Eliminar servicio</DialogTitle>
+                <DialogTitle>Eliminar línea</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        ¿Estás seguro que quieres eliminar el servicio { modalEliminar.nombre }?
+                        ¿Estás seguro que quieres eliminar la línea { modalEliminar.nombre }?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button color="primary" onClick={ handleModalEliminar }>Cancelar</Button>
                     <Button color="error" variant="contained" onClick={ () => handleEliminar(modalEliminar.id) }>Eliminar</Button>
                 </DialogActions>
-            </Dialog> */}
+            </Dialog>
         </>
     )
 }
