@@ -55,7 +55,7 @@ export const LinesPage = () => {
         {
             field: 'nombre',
             headerName: 'Nombre',
-            width: 320
+            width: 400
         },
         {
             field: 'label',
@@ -75,7 +75,7 @@ export const LinesPage = () => {
         {
             field: 'servicio',
             headerName: 'Servicio',
-            width: 70,
+            width: 80,
             headerAlign: 'center',
             resizable: false,
             sortable: false,
