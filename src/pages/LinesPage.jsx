@@ -5,6 +5,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { axiosInstance, mensajesBack } from "../helpers";
 
 import InfoIcon from '@mui/icons-material/Info';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -103,10 +104,10 @@ export const LinesPage = () => {
                     navigate('/lines/view/'+params.id, { replace: true });
                 };
 
-                // const handleEdit = (e) => {
-                //     e.stopPropagation(); // don't select this row after clicking
-                //     navigate('/services/edit/'+params.id, { replace: true });
-                // };
+                const handleEdit = (e) => {
+                    e.stopPropagation(); // don't select this row after clicking
+                    navigate('/lines/edit/'+params.id, { replace: true });
+                };
 
                 const handleDelete = (e) => {
                     e.stopPropagation();
@@ -120,11 +121,11 @@ export const LinesPage = () => {
                                 <InfoIcon />
                             </IconButton>
                         </Tooltip>
-                        {/* <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
+                        <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
                             <IconButton color="warning" onClick={ handleEdit }>
                                 <ModeEditIcon />
                             </IconButton>
-                        </Tooltip> */}
+                        </Tooltip>
                         <Tooltip arrow title="Eliminar" placement="right" TransitionComponent={Zoom}>
                             <IconButton color="error" onClick={ handleDelete }>
                                 <DeleteIcon />
