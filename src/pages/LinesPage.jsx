@@ -4,6 +4,7 @@ import { Alert, Box, Button, CircularProgress, Dialog, DialogActions, DialogCont
 import { DataGrid } from "@mui/x-data-grid";
 import { axiosInstance, mensajesBack } from "../helpers";
 
+import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -15,6 +16,7 @@ export const LinesPage = () => {
 
     // Preparamos los estados necesarios
     const [loading, setLoading] = useState(true);
+    const [serviciosList, setServciosList] = useState([]);
     const [lineasList, setLineasList] = useState([]);
     const [modalEliminar, setModalEliminar] = useState({ abierto: false, id: '', nombre: '' });
     const [snackState, setSnackState] = useState({ open: false, Transition: Slide, text: 'Snackbar sin asignar', severity: 'info', autoHide: 5000 });
@@ -70,6 +72,23 @@ export const LinesPage = () => {
             width: 130
         },
         {
+            field: 'servicio',
+            headerName: 'Servicio',
+            width: 70,
+            headerAlign: 'center',
+            resizable: false,
+            sortable: false,
+            renderCell: (params) => {
+
+                const servicio = serviciosList.filter(s => s.id === params.value);
+
+                return (
+                    <img width="50" src={ servicio[0].imagen } />
+                )
+
+            },
+        },
+        {
             field: 'actions',
             headerName: 'Acciones',
             type: 'actions',
@@ -79,10 +98,10 @@ export const LinesPage = () => {
 
                 const navigate = useNavigate();
                 
-                // const handleDetails = (e) => {
-                //     e.stopPropagation(); // don't select this row after clicking
-                //     navigate('/services/view/'+params.id, { replace: true });
-                // };
+                const handleDetails = (e) => {
+                    e.stopPropagation(); // don't select this row after clicking
+                    navigate('/lines/view/'+params.id, { replace: true });
+                };
 
                 // const handleEdit = (e) => {
                 //     e.stopPropagation(); // don't select this row after clicking
@@ -96,12 +115,12 @@ export const LinesPage = () => {
         
                 return (
                     <>
-                        {/* <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
+                        <Tooltip arrow title="Detalles" placement="left" TransitionComponent={Zoom}>
                             <IconButton color="primary" onClick={ handleDetails }>
                                 <InfoIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
+                        {/* <Tooltip arrow title="Editar" placement="right" TransitionComponent={Zoom}>
                             <IconButton color="warning" onClick={ handleEdit }>
                                 <ModeEditIcon />
                             </IconButton>
@@ -126,11 +145,16 @@ export const LinesPage = () => {
     // Función para realizar las peticiones al back
     const peticionesApi = async () => {
 
-        // Obtenemos el listado de líneas
         try {
+            
+            // Obtenemos el listado de líneas
+            const dataLineas = await axiosInstance.get('/api/linea');
+            setLineasList(dataLineas.data.lineas);
 
-            const data = await axiosInstance.get('/api/linea');
-            setLineasList(data.data.lineas);
+            // Obtenemos el listado de servicios
+            const dataServicios = await axiosInstance.get('/api/servicio');
+            setServciosList(dataServicios.data.servicios);
+
             setLoading(false);
 
         } catch ( error ) {
@@ -141,7 +165,7 @@ export const LinesPage = () => {
             // Si hay algún error, mostramos un mensaje
             setSnackState({
                 ...snackState,
-                text: 'Error al cargar el listado de líneas. Motivo: '+mensaje,
+                text: 'Error al realizar las peticiones a la API. Motivo: '+mensaje,
                 severity: 'error',
                 open: true,
                 autoHide: null
