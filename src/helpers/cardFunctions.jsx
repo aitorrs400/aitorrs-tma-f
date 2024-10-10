@@ -262,23 +262,30 @@ export const getServiceIconByCode: (code: string) => JSX.Element = ( code: strin
 
 // }
 
-export const generateIconByLineCode: (code: string) => JSX.Element = ( code: string ) => {
+export const generateLineIcon = (label, colorFondo, colorTexto) => {
 
-    const theme: LineColorData[] = lineColors.filter( lc => lc.intCode === code );
-    const backColor: string = theme.length == 0 ? '#666666' : theme[0].backColor;
-    const textColor: string = theme.length == 0 ? '#FFFFFF' : theme[0].textColor;
-    const text: string = theme.length == 0 ? 'Desconocido' : theme[0].code;
+    const backColor = colorFondo == '' ? '#666666' : colorFondo;
+    const textColor = colorTexto == '' ? '#FFFFFF' : colorTexto;
+    const text = label == '' ? '???' : label;
 
     return (
-        <h3
-            style={{
-                backgroundColor: backColor,
-                color: textColor,
+        <div style={{
+            marginRight: '16px',
+            padding: 0,
+            width: '70px',
+            height: '70px',
+            backgroundColor: backColor
+        }}>
+            <p style={{
+                margin: 0,
+                padding: 0,
                 textAlign: 'center',
-                padding: '.5em 0',
-                margin: 0
-            }}
-        >{ text }</h3>
+                fontWeight: 'bold',
+                fontSize: 18,
+                lineHeight: '70px',
+                color: textColor
+            }}>{ text }</p>
+        </div>
     )
 
 }

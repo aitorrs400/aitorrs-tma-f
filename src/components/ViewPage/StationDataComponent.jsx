@@ -1,7 +1,7 @@
 import { Card, CardContent, Chip, Grid, Paper, Typography } from '@mui/material';
 import { getServiceIconByCode } from '../../helpers';
 import { lineColors } from '../../assets/data/lineColors';
-import { generateIconByLineCode } from '../../helpers/cardFunctions';
+import { generateIconByLineCode, generateLineIcon } from '../../helpers/cardFunctions';
 
 
 export const StationDataComponent = ({ cardData }) => {
@@ -44,53 +44,34 @@ export const StationDataComponent = ({ cardData }) => {
                                     }
 
                                     {/* Datos del servicio y linea */}
-                                    <Grid item xs={2}>
-                                        { getServiceIconByCode( type ) }
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <Typography variant='h5'>Servicio</Typography>
-                                        <Typography>{ type }</Typography>
-                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={2}>
 
-                                    <Grid item xs={2}>
-                                        { generateIconByLineCode( lineCode ) }
-                                    </Grid>
-                                    <Grid item xs={5}>
-                                        <Typography variant='h5'>Linea</Typography>
-                                        <Typography>{ line }</Typography>
+                                            {/* Icono de la línea */}
+                                            <Grid item xs={6} sx={{ display: 'flex' }}>
+                                                { generateLineIcon() }
+                                                <div>
+                                                    <Typography variant='h5'>Linea</Typography>
+                                                    <Typography>{ line }</Typography>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                { getServiceIconByCode( type ) }
+                                                <Typography variant='h5'>Servicio</Typography>
+                                                <Typography>{ type }</Typography>
+                                            </Grid>
+
+                                        </Grid>
                                     </Grid>
 
                                 </Grid>
 
-                                {/* Lineas en esta estación */}
-                                {
-                                    lines && ( <Typography variant='h5' sx={{ mt: 2, mb: 1 }}>Lineas disponibles en esta Estación</Typography> )
-                                }
-                                {
-                                    lines != undefined
-                                        ? lines.length === 0
-                                            ? ( <Typography>Sin datos</Typography>)
-                                            : (
-                                                <Grid container spacing={1}>
-                                                    {
-                                                        lines.map( (l, i) => {
-                                                            return (
-                                                                <Grid item key={i} xs={2}>
-                                                                    { generateIconByLineCode( l ) }
-                                                                </Grid>
-                                                            )
-                                                        })
-                                                    }
-                                                </Grid>
-                                            )
-                                        : ''
-                                }
                             </>
                         )
                 }
 
                 {/* Mostramos información adicional */}
-                <Chip label='BD incompleta. Más info. en "Datos"' color="warning" variant="outlined" sx={{ mt: 3 }} />
+                <Chip label='Base de datos incompleta. Más información en "Ayuda"' color="warning" variant="outlined" sx={{ mt: 3 }} />
                     
             </Paper>
         </Grid>
