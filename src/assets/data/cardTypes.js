@@ -1,6 +1,5 @@
-import { CardType } from '../../types/types';
+export const cardTypes = [
 
-export const cardTypes: CardType[] = [
     { showRemainTrips: true, showRemainTime: true, type: 1, hex: '008', binary: '000000001000', name: 'T-Senzill' },
 
     { showRemainTrips: true, showRemainTime: true, type: 10, hex: 'C88', binary: '110010001000', name: 'T-Dia' },
@@ -33,6 +32,7 @@ export const cardTypes: CardType[] = [
     
     { totalTrips: 10, showRemainTrips: true, showRemainTime: false, type: 10, hex: 'FB8', binary: '111110111000', name: 'T-4' },
     { totalTrips: 8, totalDays: 30, showRemainTrips: true, showRemainTime: true, type: 10, hex: 'D20', binary: '110100100000', name: 'T-Familiar' },
+    
 ]
 
     // "188": "hol-48",  # Hola BCN 48H metro, bus (TMB), urban railway (FGC, Zone 1), Montjuïc funicular, tram (TRAM), and regional railway (Rodalies de Catalunya, Zone 1).

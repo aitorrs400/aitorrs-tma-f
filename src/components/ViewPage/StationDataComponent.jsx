@@ -1,6 +1,5 @@
 import { Card, CardContent, Chip, Grid, Paper, Typography } from '@mui/material';
 import { getServiceIconByCode } from '../../helpers';
-import { lineColors } from '../../assets/data/lineColors';
 import { generateIconByLineCode, generateLineIcon } from '../../helpers/cardFunctions';
 
 

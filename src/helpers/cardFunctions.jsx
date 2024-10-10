@@ -1,18 +1,16 @@
 import { cardTypes } from '../assets/data/cardTypes';
-import { lineColors } from '../assets/data/lineColors';
 import { stationsDB } from '../assets/data/stationsDB';
 import { DesconocidoIcon } from '../assets/desconocido';
 import { BusIcon, MetroIcon } from '../assets/servicios';
-import { CardType, Expiration, LineColorData, StationData, Tick, Trips } from '../types/types';
 
 // Función que obtiene el tipo de targeta
-export const getCardType: (code: string) => CardType = ( code: string ) => {
+export const getCardType = ( code ) => {
 
     // Obtenemos el tipo de targeta
-    const binaryCardType: string = code.slice(4,16);
-    const foundCardType: CardType | undefined = cardTypes.find( v => v.binary === binaryCardType );
+    const binaryCardType = code.slice(4,16);
+    const foundCardType = cardTypes.find( v => v.binary === binaryCardType );
 
-    let data: CardType;
+    let data;
 
     // Si se ha encontrado un registro, preparamos los datos
     if(foundCardType) {
@@ -50,13 +48,13 @@ export const getCardType: (code: string) => CardType = ( code: string ) => {
 
 }
 
-// Funcion que obtiene loss datos de marcaje
-export const getTickData: (code: string) => Tick = ( code: string ) => {
+// Funcion que obtiene los datos de marcaje
+export const getTickData = ( code ) => {
 
     // Obtenemos la fecha del último marcaje
-    const day: number = binToDec(code.slice(104,109));
-    const month: string = getMothByNumber(binToDec(code.slice(100,104)));
-    const year: string = '20' + binToDec(code.slice(93,100)).toString();
+    const day = binToDec(code.slice(104,109));
+    const month = getMothByNumber(binToDec(code.slice(100,104)));
+    const year = '20' + binToDec(code.slice(93,100)).toString();
 
     // Obtenemos la hora del último marcaje
     const hour = binToDec(code.slice(109,114));
@@ -73,13 +71,13 @@ export const getTickData: (code: string) => Tick = ( code: string ) => {
 }
 
 // Función que devuelve el número de viajes restantes
-export const getRemainTrips: (code: string, trips: number | undefined) => Trips = ( code: string, trips: number | undefined ) => {
+export const getRemainTrips = ( code, trips ) => {
 
     if( trips ) {
 
-        const remainTrips: number = binToDec(code.slice(130,134));
-        const usedTrips: number = trips - remainTrips;
-        const remainTripsPercentage: number = usedTrips * 10;
+        const remainTrips = binToDec(code.slice(130,134));
+        const usedTrips = trips - remainTrips;
+        const remainTripsPercentage = usedTrips * 10;
 
         return { remainTrips, remainTripsPercentage, usedTrips };
 
@@ -92,24 +90,26 @@ export const getRemainTrips: (code: string, trips: number | undefined) => Trips 
 }
 
 // Función que devuelve el número de días restantes
-export const getRemainTime: (code: string, days: number | undefined) => Expiration = ( code: string, days: number | undefined ) => {
+export const getRemainTime = ( code, days ) => {
 
     // const year: string = '20' + binToDec(code.slice(93,100)).toString()
-    const decYear: number = binToDec(code.slice(48,52)) + 16 // ACTUALIZADO A 2023
-    const year: string = '20'+decYear.toString();
-    const month: string = getMothByNumber(binToDec(code.slice(52,56)));
-    const day: number = binToDec(code.slice(56,61));
+    const decYear = binToDec(code.slice(48,52)) + 16 // ACTUALIZADO A 2023
+    const year = '20' + decYear.toString();
+    const month = getMothByNumber(binToDec(code.slice(52,56)));
+    const day = binToDec(code.slice(56,61));
 
-    let { remainDays, remainDaysPercent }: { remainDays: number, remainDaysPercent: number } = getRemainDays(year+'-'+binToDec(code.slice(52,56))+'-'+day, days);
+    let { remainDays, remainDaysPercent } = getRemainDays( year + '-' + binToDec(code.slice(52,56)) + '-' + day, days );
 
     return { year, month, day, remainDays, remainDaysPercent }
 
 }
 
 // Función que obtiene los datos de la estación
-export const getStationData: (code: number) => StationData = ( code: number ) => {
+export const getStationData = ( code ) => {
 
-    let foundStation: StationData | undefined = stationsDB.find( v => v.code === code );
+    // TODO: Conectar con la BD
+
+    let foundStation = stationsDB.find( v => v.code === code );
 
     if(!foundStation) {
         foundStation = stationsDB.find( v => v.code === code );
@@ -127,10 +127,11 @@ export const getStationData: (code: number) => StationData = ( code: number ) =>
             lines: []
         };
     }
+
 }
 
 // Función que devuelve el nombre del mes por el número
-const getMothByNumber: (number: number) => string = ( number: number ) => {
+const getMothByNumber = ( number ) => {
     
     // Obtenemos el mes del último marcaje y lo devolvemos como nombre del mes
     switch ( number ) {
@@ -178,25 +179,27 @@ const getMothByNumber: (number: number) => string = ( number: number ) => {
 }
 
 // Función para calcular los días restantes
-export const getRemainDays: ( date: string, tDays: number | undefined ) => { remainDays: number, remainDaysPercent: number } = ( date: string, tDays: number | undefined ) => {
+export const getRemainDays = ( date, tDays ) => {
 
-    const msDays: number = 24 * 60 * 60 * 1000;
-    const actualDay: Date = new Date();
-    const futureDay: Date = new Date(date);
+    const msDays = 24 * 60 * 60 * 1000;
+    const actualDay = new Date();
+    const futureDay = new Date(date);
 
-    const msDifference: number = Math.abs(actualDay.getTime() - futureDay.getTime());
-    let remainDays: number = Math.floor(msDifference / msDays);
-    let remainDaysPercent: number;
+    const msDifference = Math.abs( actualDay.getTime() - futureDay.getTime() );
+    let remainDays = Math.floor( msDifference / msDays );
+    let remainDaysPercent;
     
     if(tDays) {
-        remainDaysPercent = Math.round(100 - ((remainDays * 100) / tDays));
+        remainDaysPercent = Math.round( 100 - ((remainDays * 100) / tDays) );
     } else {
         remainDaysPercent = 0;
     }
 
     if (futureDay < actualDay) {
+
         remainDays *= -1;
         remainDaysPercent = 100
+
     }
 
     return { remainDays, remainDaysPercent };
@@ -204,15 +207,15 @@ export const getRemainDays: ( date: string, tDays: number | undefined ) => { rem
 }
 
 // Función que obtiene el código de comprobación real del billete
-export const getRealCRC: (code: string) => string = ( code: string ) => {
+export const getRealCRC = ( code ) => {
 
-    const crc: string = binaryToHex(code.slice(184,196));
+    const crc = binaryToHex( code.slice(184,196) );
     return crc;
 
 }
 
 // Función que devuelve el icono según el tipo de servicio
-export const getServiceIconByCode: (code: string) => JSX.Element = ( code: string ) => {
+export const getServiceIconByCode = ( code ) => {
 
     switch ( code ) {
     
@@ -228,40 +231,7 @@ export const getServiceIconByCode: (code: string) => JSX.Element = ( code: strin
 
 }
 
-// Función que devielve el icono según la linea
-// export const getLineIconByCode: (code: string) => JSX.Element = ( code: string ) => {
-
-//     switch ( code ) {
-    
-//         case 'L1':
-//             return (<L1Icon />);
-//         case 'L2':
-//             return (<L2Icon />);
-//         case 'L3':
-//             return (<L3Icon />);
-//         case 'L4':
-//             return (<L4Icon />);
-//         case 'L5':
-//             return (<L5Icon />);
-//         case 'L9N':
-//             return (<L9NIcon />);
-//         case 'L9S':
-//             return (<L9SIcon />);
-//         case 'L10N':
-//             return (<L10NIcon />);
-//         case 'L10S':
-//             return (<L10SIcon />);
-//         case 'L11':
-//             return (<L11Icon />);
-//         case 'FM':
-//             return (<FMIcon />);
-//         default:
-//             return (<DesconocidoIcon />);
-            
-//     }
-
-// }
-
+// Función de devuelve el icono de la línea
 export const generateLineIcon = (label, colorFondo, colorTexto) => {
 
     const backColor = colorFondo == '' ? '#666666' : colorFondo;
@@ -294,11 +264,11 @@ export const generateLineIcon = (label, colorFondo, colorTexto) => {
 // CONVERSORES
 
 // Conversor de hexadecimal a binario
-export const hexToBin: (hex: string) => string = (hex: string) => {
+export const hexToBin = ( hex ) => {
 
     let bin = "";
 
-    for (let i: number = 0; i < hex.length; i++) {
+    for (let i = 0; i < hex.length; i++) {
 
       const num = parseInt(hex[i], 16);
       const binary = num.toString(2).padStart(4, "0");
@@ -312,13 +282,13 @@ export const hexToBin: (hex: string) => string = (hex: string) => {
 }
 
 // Conversor de binario a decimal
-export const binToDec: (bin: string) => number = (bin: string) => {
+export const binToDec = ( bin ) => {
 
-    let dec: number = 0;
+    let dec = 0;
 
-    for (let i: number = 0; i < bin.length; i++) {
+    for (let i = 0; i < bin.length; i++) {
 
-      const bit: number = parseInt(bin[i]);
+      const bit = parseInt(bin[i]);
       dec += bit * Math.pow(2, bin.length - i - 1);
 
     }
@@ -328,14 +298,14 @@ export const binToDec: (bin: string) => number = (bin: string) => {
 }
 
 // Conversor de binario a hexadecimal
-export const binaryToHex: (binary: string) => string = (binary: string): string => {
+export const binaryToHex = ( binary ) => {
     
     // Asegurarse de que la longitud de la cadena binaria sea un múltiplo de 4
     while (binary.length % 4 !== 0) {
         binary = '0' + binary;
     }
 
-    const hexMap: any = {
+    const hexMap = {
       '0000': '0',
       '0001': '1',
       '0010': '2',
@@ -354,11 +324,11 @@ export const binaryToHex: (binary: string) => string = (binary: string): string 
       '1111': 'F',
     };
   
-    let hex: string = '';
+    let hex = '';
 
-    for (let i: number = 0; i < binary.length; i += 4) {
+    for (let i = 0; i < binary.length; i += 4) {
 
-      const chunk: string = binary.substr(i, 4);
+      const chunk = binary.substr(i, 4);
       hex += hexMap[chunk];
 
     }
@@ -370,7 +340,7 @@ export const binaryToHex: (binary: string) => string = (binary: string): string 
 // CÁLCULO DE CRC
 
 // Función que calcula el código de comprobación del código del billete
-export const calculaCRC: (pistaCompleta: string) => string = ( pistaCompleta: string ) => {
+export const calculaCRC = ( pistaCompleta ) => {
 
     /*
     Ejemplo: BC901E395AD900014A335C00C542390C18B11000000000071F
@@ -387,18 +357,18 @@ export const calculaCRC: (pistaCompleta: string) => string = ( pistaCompleta: st
     datos = pistaCompleta.substring(3, 187);
 
     //alert("Cadena cortada pa calcular CRC (de bit 3 al bit 187):: "+datos);
-    const datosBinArray: any = datos.split('');	// convertimos en array
-    const ochoCeros: string = '00000000'; // necesario para el calculo CRC
-    const col_odd_parity: any = ochoCeros.split('');
+    const datosBinArray = datos.split('');	// convertimos en array
+    const ochoCeros = '00000000'; // necesario para el calculo CRC
+    const col_odd_parity = ochoCeros.split('');
 
     // A continuación es la traducción literal de opTMestre en Python a Javascript,
     // básicamente lee cada 8 bits la paridad y lo añade al resultado final.
     // Los comentarios en ingles estaban en el código original en Python.
-    for ( let i: number = 0; i < 8; i++) {
+    for ( let i = 0; i < 8; i++) {
 
-        let parity: any = '0';
+        let parity = '0';
 
-        for (let j: number = i; j < 184; j = j + 8){
+        for (let j = i; j < 184; j = j + 8){
 
             // hacemos un XOR
             parity = (datosBinArray[j] ^ parity);
@@ -410,29 +380,29 @@ export const calculaCRC: (pistaCompleta: string) => string = ( pistaCompleta: st
     }
 
     // Option 0: (Fast/emulated one) Calc even parity of resulting columun odd parity string
-    let parity_check: any = '0';
+    let parity_check = '0';
 
-    for (let i: number = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
 
         parity_check = (col_odd_parity[i] ^ parity_check); // parity_check = bits_xor(col_odd_parity[i], parity_check)
 
     }
 
     // String concatenation resulting 9bit-crc
-    let rlc: string = '';
+    let rlc = '';
 
-    for (let i: number = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
         rlc = rlc + col_odd_parity[i];
     }
 
     rlc = rlc + parity_check;
 
-    return binaryToHex(arrange_crc(rlc));
+    return binaryToHex( arrange_crc(rlc) );
 
 }
 
 // Función extra de apollo a la función anterior
-export const arrange_crc: (crc: string) => string = ( crc: string ) => {
+export const arrange_crc = ( crc ) => {
 
     // CRC are not a pure RLC, there are 2 bits (8 and 0) that doens't
     // act as expeted, this automata tries to correct that to emulate
@@ -449,11 +419,7 @@ export const arrange_crc: (crc: string) => string = ( crc: string ) => {
     Si bit[0]=0 y bit[8]=1 --> bit[0]=0 y bit[8]=1
     Si bit[0]=1 y bit[8]=0 --> bit[0]=0 y bit[8]=0
     Si bit[0]=1 y bit[8]=1 --> bit[0]=1 y bit[8]=1
-    */
 
-
-
-    /*
     La "tabla modificada" que hay más abajo, parece arreglar los fallos anteriores, pero sigue fallando a veces.
     Quizás una explicación es que las máquinas marcadoras, cuando el billete se agota, A VECES escriben mal el CRC expresamente.
     Pero en otros casos no hay explicación del motivo. O quizás es que soy un poco burra y no doy pa mas, quien sabe.
@@ -462,6 +428,7 @@ export const arrange_crc: (crc: string) => string = ( crc: string ) => {
     Si bit[0]=0 y bit[8]=0 --> bit[0]=0 y bit[8]=1
     Si bit[0]=0 y bit[8]=1 --> bit[0]=0 y bit[8]=1
     Si bit[0]=1 y bit[8]=0 --> bit[0]=0 y bit[8]=0
+
     Versión año 2012: Si bit[0]=1 y bit[8]=1 --> bit[0]=1 y bit[8]=1 	(cuando esta agotada marca 00 y no 11)(aunque no estoy seguro del todo)
     Versión año 2013: Si bit[0]=1 y bit[8]=1 --> bit[0]=0 y bit[8]=0	¿Son imaginaciones mías o este año TMB ha modificado un poco el CRC?
     ----------------------------------------
@@ -473,11 +440,15 @@ export const arrange_crc: (crc: string) => string = ( crc: string ) => {
     let y2 = '0';
 
     if (x == '0') {
+
         if (y == '0') { x2 = '0'; y2 = '1'; }
         else { x2 = '0'; y2 = '1'; }
+
     } else {
+
         if (y == '0') { x2 = '0'; y2 = '0'; }
         else { x2 = '0'; y2 = '0'; }
+
     }
 
     crc = ponBit(crc, 0, x2);
@@ -488,16 +459,17 @@ export const arrange_crc: (crc: string) => string = ( crc: string ) => {
 }
 
 // Lee un bit en la posicion dada. Comienza por posicion 0.
-const cogeBit: (cadena: string, pos: number) => string = ( cadena: string, pos: number ) => {
+const cogeBit = ( cadena, pos ) => {
 
-    let result: string = '';
+    let result = '';
     result = cadena.charAt(pos);
+
     return(result);
 
 }
 
 // Escribe un bit en la posicion dada.  
-const ponBit: (str: string, index: number, chr: string) => string = ( str: string, index: number, chr: string ) => {
+const ponBit = ( str, index, chr ) => {
 
     if (index > str.length-1) return str;
     return str.substr(0,index) + chr + str.substr(index+1);
