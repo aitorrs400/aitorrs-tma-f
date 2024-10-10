@@ -1,6 +1,4 @@
-import { StationData } from "../../types/types";
-
-export const stationsDB: StationData[] = [
+export const stationsDB = [
 
     /** LÍNEAS DE METRO **/
 
@@ -413,4 +411,5 @@ export const stationsDB: StationData[] = [
     { code: 1639, type: 'Bus', lineCode: 'VB2', line: `Viladecans (Estació Rodalies - Can Palmer)` },
     { code: -1, type: 'Bus', lineCode: 'VB4', line: `Viladecans (Centre - Platja de la Murtra)` },
     { code: -1, type: 'Bus', lineCode: 'X1', line: `BCN Centre-F.Macià / BCN Centre-Glòries` }
+
 ]
