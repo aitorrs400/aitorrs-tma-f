@@ -1,5 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { HomePage, ViewPage, DataPage, ServicesPage, ServicesAddPage, ServicesViewEditPage, LinesPage, LinesAddPage, LinesViewEditPage } from '../pages';
+import {
+    HomePage,
+    ViewPage,
+    ServicesPage, ServicesAddPage, ServicesViewEditPage,
+    LinesPage, LinesAddPage, LinesViewEditPage,
+    StationsPage, StationsAddPage,
+    StationsViewEditPage
+} from '../pages';
 import { MainLayout } from '../layout/MainLayout';
 
 export const MainRoutes = () => {
@@ -17,8 +24,11 @@ export const MainRoutes = () => {
                     <Route path='lines/add' element={ <LinesAddPage /> } />
                     <Route path='/lines/view/:id' element={ <LinesViewEditPage edit={ false } /> } />
                     <Route path='/lines/edit/:id' element={ <LinesViewEditPage edit={ true } /> } />
+                    <Route path='/stations' element={ <StationsPage /> } />
+                    <Route path='/stations/add' element={ <StationsAddPage /> } />
+                    <Route path='/stations/view/:id' element={ <StationsViewEditPage edit={ false } /> } />
+                    <Route path='/stations/edit/:id' element={ <StationsViewEditPage edit={ true } /> } />
                     <Route path='/view' element={ <ViewPage /> } />
-                    <Route path='/data' element={ <DataPage /> } />
                     <Route path='/' element={ <Navigate to='home' /> } />
                 </Routes>
             </MainLayout>

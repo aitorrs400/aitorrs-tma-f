@@ -7,16 +7,18 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 
 
-export const LinesViewEditPage = ({ edit }) => {
+export const StationsViewEditPage = ({ edit }) => {
 
     // Inicializamos variables
     const navigate = useNavigate();
     const { id } = useParams();
 
     // Iniciamos estados
-    const [formErrors, setFormErrors] = useState({ nombre: false, label: false, colorFondo: false, colorTexto: false, servicio: false });
-    const [line, setLine] = useState({ nombre: '', label: '', colorFondo: '', colorTexto: '', servicio: '' });
+    const [formErrors, setFormErrors] = useState({ codigo: false, nombre: false, linea: false });
+    const [station, setStation] = useState({ codigo: '', nombre: '', linea: '' });
+    const [line, setLine] = useState(null);
     const [service, setService] = useState(null);
+    const [linesList, setLinesList] = useState([]);
     const [servicesList, setServicesList] = useState([]);
     const [snackState, setSnackState] = useState({ open: false, Transition: Slide, text: 'Snackbar sin asignar', severity: 'info' });
 
@@ -26,21 +28,31 @@ export const LinesViewEditPage = ({ edit }) => {
     },[]);
 
     useEffect(() => {
-        changeService(line.servicio);
-    }, [servicesList]);
+        changeLine(station.linea);
+    }, [linesList]);
+
+    useEffect(() => {
+        if(line) {
+            changeService(line.servicio)
+        }
+    }, [line]);
 
     // Funciones
     const peticionesApi = async () => {
 
         try {
 
-            // Obtenemos la linea
-            const lineApi = await axiosInstance.get('/api/linea/'+id);
-            setLine( lineApi.data.data );
+            // Obtenemos la parada
+            const stationData = await axiosInstance.get('/api/parada/'+id);
+            setStation( stationData.data.data );
+
+            // Obtenemos listado de lineas
+            const lineData = await axiosInstance.get('/api/linea');
+            setLinesList( lineData.data.lineas );
 
             // Obtenemos listado de servicios
-            const serviceApi = await axiosInstance.get('/api/servicio');
-            setServicesList( serviceApi.data.servicios );
+            const serviceData = await axiosInstance.get('/api/servicio');
+            setServicesList( serviceData.data.servicios );
 
         } catch ( error ) {
 
@@ -60,50 +72,56 @@ export const LinesViewEditPage = ({ edit }) => {
 
     }
 
+    const changeLine = (id) => {
+
+        const lineFiltrado = linesList.filter( l => l.id === id );
+
+        if( lineFiltrado ) {
+            if( lineFiltrado.length > 0 ) {
+
+                setLine( lineFiltrado[0] );
+
+            }
+        }
+
+    }
+
     const changeService = (id) => {
 
-        const serviceFiltrado = servicesList.filter(s => s.id === id);
-
+        const serviceFiltrado = servicesList.filter( s => s.id === id );
+        
         if( serviceFiltrado ) {
             if( serviceFiltrado.length > 0 ) {
+
                 setService(serviceFiltrado[0]);
+
             }
         }
 
     }
 
     const handleAtras = (e) => {
-        navigate('/lines', { replace: true });
+        navigate('/stations', { replace: true });
     }
 
     const handleSave = async (e) => {
 
         let errors = false;
-        let errorsForm = { nombre: false, label: false, colorFondo: false, colorTexto: false, servicio: false };
+        let errorsForm = { codigo: false, nombre: false, linea: false };
 
         // Validamos todos los campos primero
-        if( line.nombre === '' ) {
+        if( station.codigo === '' ) {
+            errorsForm.codigo = true;
+            errors = true;
+        }
+
+        if( station.nombre === '' ) {
             errorsForm.nombre = true;
             errors = true;
         }
 
-        if( line.label === '' ) {
-            errorsForm.label = true;
-            errors = true;
-        }
-
-        if( line.colorFondo === '' ) {
-            errorsForm.colorFondo = true;
-            errors = true;
-        }
-
-        if( line.colorTexto === '' ) {
-            errorsForm.colorTexto = true;
-            errors = true;
-        }
-
-        if( line.servicio === '' ) {
-            errorsForm.servicio = true;
+        if( station.linea === '' ) {
+            errorsForm.linea = true;
             errors = true;
         }
 
@@ -126,12 +144,12 @@ export const LinesViewEditPage = ({ edit }) => {
             } else {
 
                 // Hacemos la petición al back
-                const result = await axiosInstance.put('/api/linea/'+id, line);
+                const result = await axiosInstance.put('/api/parada/'+id, station);
     
                 // Mostramos mensaje informativo
                 setSnackState({
                     ...snackState,
-                    text: 'Línea actualizada correctamente',
+                    text: 'Parada actualizada correctamente',
                     severity: 'success',
                     open: true
                 });
@@ -146,7 +164,7 @@ export const LinesViewEditPage = ({ edit }) => {
             // Si hay algún error, mostramos un mensaje
             setSnackState({
                 ...snackState,
-                text: 'Error al actualizar la línea. Motivo: '+mensaje,
+                text: 'Error al actualizar la parada. Motivo: '+mensaje,
                 severity: 'error',
                 open: true
             });
@@ -163,15 +181,30 @@ export const LinesViewEditPage = ({ edit }) => {
     return (
         <Grid container spacing={3}>
 
-            {/* Datos de la línea */}
+            {/* Datos de la parada */}
             <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                        Datos de la línea
+                        Datos de la parada
                     </Typography>
                     
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={2}>
+                            <TextField
+                                required
+                                disabled={ !edit }
+                                error={ formErrors.codigo }
+                                helperText={ formErrors.codigo ? "Campo obligatorio" : "" }
+                                id="codigo"
+                                label="Código"
+                                variant="filled"
+                                value={ station.codigo }
+                                onChange={ (e) => setStation(prev => ({ ...prev, codigo: e.target.value })) }
+                                inputProps={{ maxLength: 5 }}
+                                sx={{ width: '100%' }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={5}>
                             <TextField
                                 required
                                 disabled={ !edit }
@@ -180,79 +213,31 @@ export const LinesViewEditPage = ({ edit }) => {
                                 id="nombre"
                                 label="Nombre"
                                 variant="filled"
-                                value={ line.nombre }
-                                onChange={ (e) => setLine(prev => ({ ...prev, nombre: e.target.value })) }
+                                value={ station.nombre }
+                                onChange={ (e) => setStation(prev => ({ ...prev, nombre: e.target.value })) }
                                 sx={{ width: '100%' }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <FormControl required disabled={ !edit } variant="filled" sx={{ width: '100%', minWidth: 120 }} error={ formErrors.servicio }>
-                                <InputLabel id="servicio-label">Servicio</InputLabel>
+                        <Grid item xs={12} sm={5}>
+                            <FormControl required disabled={ !edit } variant="filled" sx={{ width: '100%', minWidth: 120 }} error={ formErrors.linea }>
+                                <InputLabel id="servicio-label">Línea</InputLabel>
                                 <Select
-                                    id="servicio"
-                                    value={ line.servicio }
+                                    id="linea"
+                                    value={ station.linea }
                                     onChange={ (e) => {
-                                        setLine(prev => ({ ...prev, servicio: e.target.value }));
-                                        changeService(e.target.value);
+                                        setStation(prev => ({ ...prev, linea: e.target.value }));
+                                        changeLine(e.target.value);
                                     } }
                                 >
                                     <MenuItem value=""><em>Seleccionar</em></MenuItem>
                                     {
-                                        servicesList.length > 0  &&
-                                            servicesList.map( service => (
-                                                <MenuItem key={ service.id } value={ service.id }>{ service.nombre }</MenuItem>
-                                            ))
+                                        linesList.map( line => (
+                                            <MenuItem key={ line.id } value={ line.id }>{ line.nombre }</MenuItem>
+                                        ))
                                     }
                                 </Select>
-                                { formErrors.servicio && (<FormHelperText>Campo obligatorio</FormHelperText>) }
+                                { formErrors.linea && (<FormHelperText>Campo obligatorio</FormHelperText>) }
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                required
-                                disabled={ !edit }
-                                error={ formErrors.label }
-                                helperText={ formErrors.label ? "Campo obligatorio" : "" }
-                                id="label"
-                                label="Etiqueta"
-                                variant="filled"
-                                value={ line.label }
-                                onChange={ (e) => setLine(prev => ({ ...prev, label: e.target.value })) }
-                                inputProps={{ maxLength: 3 }}
-                                sx={{ width: '100%' }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                required
-                                disabled={ !edit }
-                                error={ formErrors.colorFondo }
-                                helperText={ formErrors.colorFondo ? "Campo obligatorio" : "" }
-                                id="colorFondo"
-                                label="Color de fondo"
-                                placeholder="#RRGGBB"
-                                variant="filled"
-                                value={ line.colorFondo }
-                                onChange={ (e) => setLine(prev => ({ ...prev, colorFondo: e.target.value })) }
-                                inputProps={{ maxLength: 7 }}
-                                sx={{ width: '100%' }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                required
-                                disabled={ !edit }
-                                error={ formErrors.colorTexto }
-                                helperText={ formErrors.colorTexto ? "Campo obligatorio" : "" }
-                                id="colorTexto"
-                                label="Color de texto"
-                                placeholder="#RRGGBB"
-                                variant="filled"
-                                value={ line.colorTexto }
-                                onChange={ (e) => setLine(prev => ({ ...prev, colorTexto: e.target.value })) }
-                                inputProps={{ maxLength: 7 }}
-                                sx={{ width: '100%' }}
-                            />
                         </Grid>
                     </Grid>
 
@@ -279,24 +264,30 @@ export const LinesViewEditPage = ({ edit }) => {
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                        <div style={{
-                            marginTop: '8px',
-                            marginBottom: '8px',
-                            padding: 0,
-                            width: '70px',
-                            height: '70px',
-                            backgroundColor: line.colorFondo
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                padding: 0,
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                                fontSize: 18,
-                                lineHeight: '70px',
-                                color: line.colorTexto
-                            }}>{ line.label }</p>
-                        </div>
+                            {
+                                line ? (
+                                    <div style={{
+                                        marginTop: '8px',
+                                        marginBottom: '8px',
+                                        padding: 0,
+                                        width: '70px',
+                                        height: '70px',
+                                        backgroundColor: line.colorFondo
+                                    }}>
+                                        <p style={{
+                                            margin: 0,
+                                            padding: 0,
+                                            textAlign: 'center',
+                                            fontWeight: 'bold',
+                                            fontSize: 18,
+                                            lineHeight: '70px',
+                                            color: line.colorTexto
+                                        }}>{ line.label }</p>
+                                    </div>
+                                ) : (
+                                    <Typography>Sin icono de línea</Typography>
+                                )
+                            }
                         </Grid>
                     </Grid>
                 </Paper>
