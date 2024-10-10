@@ -1,9 +1,10 @@
 import { useContext, useState } from 'react';
 import { Grid, TextField, Button, Chip, Typography, Paper, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { binToDec, calculaCRC, getCardType, getRealCRC, getRemainTime, getRemainTrips, getStationData, getTickData, hexToBin } from '../helpers';
 import { CardTypeComponent, ExpirationComponent, StationDataComponent, TickDataComponent, VerifyComponent } from '../components/ViewPage';
 import { AuthContext } from '../context/AuthContext';
+
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
 export const ViewPage = () => {
@@ -96,12 +97,11 @@ export const ViewPage = () => {
         <>
             <Grid container spacing={2} alignItems='center' mb={4}>
 
-                {/* Cabecera principal, donde se insertan los datos */}
+                {/* Cabecera principal */}
                 <Grid item xs={12}>
                     <Typography variant="h1" sx={{ fontSize: { xs: "24px", sm: "32px", md: "38px" }, mb: 2 }}>Hola { user.nombre }!</Typography>
                     <Typography sx={{ mb: 2 }}>Para visualizar los datos de la banda magnética de tu targeta de transporte, introduce la codificación en el campo de texto. Para mas información sobre como funciona este código, dirígete al apartado "Ayuda".</Typography>
                     <Typography sx={{ mb: 2 }}>Esta aplicación está diseñada para obtener datos mas precisos del estado de la targeta.</Typography>
-                    
                     <Chip label='AVISO: Modificar los datos de la banda magnética no es ético y corres el riesgo de ser sancionado' color="error" variant="filled" sx={{ mb: 2 }} />
                 </Grid>
 
@@ -135,7 +135,7 @@ export const ViewPage = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
 
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={12} md={6}>
                             <Grid container spacing={2}>
                                 <CardTypeComponent cardData={ cardData } />
                                 <ExpirationComponent cardData={ cardData } />
@@ -143,7 +143,7 @@ export const ViewPage = () => {
                             </Grid>
                         </Grid>
 
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={12} md={6}>
                             <Grid container spacing={2}>
                                 <TickDataComponent cardData={ cardData } />
                                 <StationDataComponent cardData={ cardData } />
