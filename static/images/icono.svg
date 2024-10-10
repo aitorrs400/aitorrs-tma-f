@@ -1,0 +1,15 @@
+<svg width="130" height="130" xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" version="1.1">
+
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_6">
+   <rect stroke="null" height="130" width="130" y="0" x="0" stroke-width="1.00398" fill="#f6f6f6"/>
+   <rect stroke="null" id="svg_1" height="130" width="76.79381" y="0" x="0" stroke-width="1.00398" fill="#019384"/>
+   <path stroke-linejoin="round" stroke-linecap="round" fill="#f6f6f6"  id="path993" d="m8.59064,64.99999l22.48958,-38.36458l0,76.72917l-22.48958,-38.36459z"/>
+   <text stroke-linejoin="round" stroke-linecap="round" fill="#f6f6f6" font-family="Arial" font-size="50" font-weight="bold" id="text1056" y="82.62887" x="37.72094" xml:space="preserve">
+    <tspan font-size="50.8px" y="82.62887" x="37.72094" id="tspan1054" >T</tspan>
+   </text>
+   <text stroke-linejoin="round" stroke-linecap="round" fill="#000000" font-family="Arial" font-size="50" font-weight="bold" id="svg_3" y="82.42268" x="82.6694" xml:space="preserve">M</text>
+  </g>
+ </g>
+</svg>

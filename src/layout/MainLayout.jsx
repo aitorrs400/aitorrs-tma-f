@@ -140,7 +140,7 @@ export const MainLayout = ({ children }) => {
                         <IconButton
                             onClick={ handleAccountMenuOpen }
                             color="inherit">
-                            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                            <Avatar src='/static/images/icono.png' sx={{ width: 32, height: 32 }}></Avatar>
                         </IconButton>
                     </Tooltip>
                 </Toolbar>
