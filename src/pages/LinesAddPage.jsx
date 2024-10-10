@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Box, Button, FormControl, FormHelperText, Grid, InputAdornment, InputLabel, MenuItem, Paper, Select, Slide, Snackbar, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Paper, Select, Slide, Snackbar, TextField, Typography } from "@mui/material"
 import { axiosInstance, mensajesBack } from "../helpers";
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
