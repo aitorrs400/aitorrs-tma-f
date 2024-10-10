@@ -4,7 +4,8 @@ import {
     ViewPage,
     ServicesPage, ServicesAddPage, ServicesViewEditPage,
     LinesPage, LinesAddPage, LinesViewEditPage,
-    StationsPage, StationsAddPage
+    StationsPage, StationsAddPage,
+    StationsViewEditPage
 } from '../pages';
 import { MainLayout } from '../layout/MainLayout';
 
@@ -25,6 +26,8 @@ export const MainRoutes = () => {
                     <Route path='/lines/edit/:id' element={ <LinesViewEditPage edit={ true } /> } />
                     <Route path='/stations' element={ <StationsPage /> } />
                     <Route path='/stations/add' element={ <StationsAddPage /> } />
+                    <Route path='/stations/view/:id' element={ <StationsViewEditPage edit={ false } /> } />
+                    <Route path='/stations/edit/:id' element={ <StationsViewEditPage edit={ true } /> } />
                     <Route path='/view' element={ <ViewPage /> } />
                     <Route path='/' element={ <Navigate to='home' /> } />
                 </Routes>
