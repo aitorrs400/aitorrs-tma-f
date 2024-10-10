@@ -26,11 +26,5 @@ dist-ssr
 # Variables de entorno
 .env
 
-# Firebase cache
-.firebase/
-
-# Firebase config
-.firebaserc
-
 # Github workflows
 .github/*
