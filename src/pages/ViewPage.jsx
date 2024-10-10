@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Grid, TextField, Button, Chip, Typography, Paper, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import { binToDec, calculaCRC, getCardType, getRealCRC, getRemainTime, getRemainTrips, getStationData, getTickData, hexToBin } from '../helpers';
+import { binToDec, calculaCRC, getCardType, getRealCRC, getRemainTime, getRemainTrips, getTickData, hexToBin } from '../helpers';
 import { CardTypeComponent, ExpirationComponent, StationDataComponent, TickDataComponent, VerifyComponent } from '../components/ViewPage';
 import { AuthContext } from '../context/AuthContext';
 
@@ -31,15 +31,7 @@ export const ViewPage = () => {
             lastMinute: 0,
             lastTickDays: 0
         },
-        station: '',
-        stationData: {
-            code: 0,
-            type: 'Metro',
-            lineCode: '',
-            line: '',
-            name: '',
-            lines: []
-        },
+        stationCode: '',
         trips: {
             remainTrips: 0,
             remainTripsPercentage: 0,
@@ -78,15 +70,14 @@ export const ViewPage = () => {
             const type = getCardType(binaryData);
             const zone = binToDec(binaryData.slice(61, 64));
             const tick = getTickData(binaryData);
-            const station = binToDec(binaryData.slice(76,87)).toString();
-            const stationData = getStationData(parseInt(station, 10));
+            const stationCode = binToDec(binaryData.slice(76,87)).toString();
             const trips = getRemainTrips(binaryData, type.totalTrips);
             const expiration =  getRemainTime(binaryData, type.totalDays);
             const realCRC = getRealCRC(binaryData);
             const calculatedCRC = calculaCRC(binaryData);
 
             // Finalmente, seteamos los datos en el estado
-            setCardData({ type, zone, tick, station, stationData, trips, expiration, realCRC, calculatedCRC });
+            setCardData({ type, zone, tick, stationCode, trips, expiration, realCRC, calculatedCRC });
 
         }
 

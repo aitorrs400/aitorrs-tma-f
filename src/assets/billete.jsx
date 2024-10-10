@@ -1,10 +1,7 @@
-import * as React from "react"
+import * as React from 'react';
 
-interface Props {
-    nombre: string
-    zonas: string
-}
-const Billete = ( { nombre, zonas }: Props ) => (
+
+const Billete = ({ nombre, zonas }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
@@ -722,7 +719,7 @@ const Billete = ( { nombre, zonas }: Props ) => (
             fill: "#fff",
           }}
         >
-          {"2022"}
+          { new Date().getFullYear() }
         </tspan>
       </tspan>
     </text>

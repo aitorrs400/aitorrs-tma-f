@@ -1,6 +1,5 @@
 import { cardTypes } from '../assets/data/cardTypes';
 import { stationsDB } from '../assets/data/stationsDB';
-import { DesconocidoIcon } from '../assets/desconocido';
 import { BusIcon, MetroIcon } from '../assets/servicios';
 
 // Función que obtiene el tipo de targeta
@@ -225,7 +224,7 @@ export const getServiceIconByCode = ( code ) => {
             return (<BusIcon />);
 
         default:
-            return (<DesconocidoIcon />);
+            return (<></>);
 
     }
 
@@ -234,9 +233,9 @@ export const getServiceIconByCode = ( code ) => {
 // Función de devuelve el icono de la línea
 export const generateLineIcon = (label, colorFondo, colorTexto) => {
 
-    const backColor = colorFondo == '' ? '#666666' : colorFondo;
+    const backColor = colorFondo == '' ? '#9E9E9E' : colorFondo;
     const textColor = colorTexto == '' ? '#FFFFFF' : colorTexto;
-    const text = label == '' ? '???' : label;
+    const text = label == '' ? 'N/A' : label;
 
     return (
         <div style={{
