@@ -1,6 +1,6 @@
-import { Card, CardContent, Chip, Grid, Paper, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Typography } from '@mui/material';
 import { getServiceIconByCode } from '../../helpers';
-import { generateIconByLineCode, generateLineIcon } from '../../helpers/cardFunctions';
+import { generateLineIcon } from '../../helpers/cardFunctions';
 
 
 export const StationDataComponent = ({ cardData }) => {
