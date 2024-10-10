@@ -246,10 +246,10 @@ export const StationsPage = () => {
                                             disableColumnMenu
                                             initialState={{
                                                 pagination: {
-                                                    paginationModel: { page: 0, pageSize: 5 },
+                                                    paginationModel: { page: 0, pageSize: 30 },
                                                 },
                                             }}
-                                            pageSizeOptions={[5, 10]}
+                                            pageSizeOptions={[5, 10, 30]}
                                         />
                                     </div>
                                     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: '8px' }}>
