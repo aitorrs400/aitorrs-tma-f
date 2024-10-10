@@ -148,7 +148,7 @@ export const StationsAddPage = () => {
                     </Typography>
 
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={2}>
                             <TextField
                                 required
                                 error={ formErrors.codigo }
@@ -162,7 +162,7 @@ export const StationsAddPage = () => {
                                 sx={{ width: '100%' }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={5}>
                             <TextField
                                 required
                                 error={ formErrors.nombre }
@@ -175,7 +175,7 @@ export const StationsAddPage = () => {
                                 sx={{ width: '100%' }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={5}>
                             <FormControl required variant="filled" sx={{ width: '100%', minWidth: 120 }} error={ formErrors.linea }>
                                 <InputLabel id="servicio-label">Línea</InputLabel>
                                 <Select
