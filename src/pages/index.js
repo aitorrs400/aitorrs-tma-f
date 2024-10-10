@@ -7,4 +7,5 @@ export * from './LoginPage';
 export * from './ServicesAddPage';
 export * from './ServicesPage';
 export * from './ServicesViewEditPage';
+export * from './StationsPage';
 export * from './ViewPage';
